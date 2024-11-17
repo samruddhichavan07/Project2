@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+class myBank {
+public:
+    int accno;
+    char name[20];
+    float balance;
+    void assign_initial() {
+        cout<<"Enter the Account number"<<endl;
+        cin>>accno;
+        cout<<"Balance initialised to zero"<<endl;
+        balance=0;
+        cout<<"Enter name of account holder"<<endl;
+        cin>>name;
+    }
+    void deposit() {
+        float amount;
+        cout<<"Enter the amount you want to deposit"<<endl;
+        cin>>amount;
+        balance+=amount;
+        cout<<"Current balance is:"<<balance<<endl;
+    }
+    void withdraw() {
+        float amount;
+        cout<<"Enter the amount you want to withdraw"<<endl;
+        cin>>amount;
+        if(amount<=balance) {
+            balance-=amount;
+        } else {
+            cout<<"Insufficient balance"<<endl;
+        }
+        cout<<"The current balance is"<<balance<<endl;
+    }
+    void display() {
+        cout<<"name:\t"<<name<<endl;
+        cout<<"accno:\t"<<accno<<endl; // Corrected line
+        cout<<"balance:\t"<<balance<<endl;
+    }
+};
+
+int main() {
+    myBank user1;
+    user1.assign_initial();
+    user1.deposit();
+    user1.withdraw();
+    user1.display();
+    return 0;
+}
