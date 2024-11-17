@@ -1,0 +1,135 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Book class representing each book in the library
+class Book {
+private:
+    string title;
+    string author;
+    string publisher;
+    double price;
+    int stock;
+
+public:
+    // Constructor
+    Book(string t, string a, string p, double pr, int s)
+        : title(t), author(a), publisher(p), price(pr), stock(s) {}
+
+    // Function to display book details
+    void displayBook() const {
+        cout << "Title: " << title << endl;
+        cout << "Author: " << author << endl;
+        cout << "Publisher: " << publisher << endl;
+        cout << "Price: " << price << endl;
+        cout << "Stock: " << stock << endl;
+    }
+
+    // Function to check if the book title matches
+    bool isTitle(const string& t) const {
+        return t == title;
+    }
+
+    // Function to update stock after a sale
+    bool sellBook(int quantity) {
+        if (quantity <= stock) {
+            stock -= quantity;
+            cout << "Book sold successfully!" << endl;
+            return true;
+        } else {
+            cout << "Insufficient stock!" << endl;
+            return false;
+        }
+    }
+
+    // Function to update the book price
+    void updatePrice(double newPrice) {
+        price = newPrice;
+    }
+};
+
+// Bookshop class representing the library system
+class Bookshop {
+private:
+    Book inventory[10];  // Fixed size array of 10 books
+    int numBooks;        // Counter for the number of books in inventory
+
+public:
+    // Constructor to initialize numBooks to 0
+    Bookshop() : numBooks(0) {}
+
+    // Function to add a new book to the inventory
+    void addBook(const Book& book) {
+        if (numBooks < 10) {
+            inventory[numBooks] = book;  // Add book to array
+            numBooks++;                   // Increment book counter
+        } else {
+            cout << "Inventory is full!" << endl;
+        }
+    }
+
+    // Function to display all books in the inventory
+    void displayInventory() const {
+        if (numBooks == 0) {
+            cout << "Inventory is empty!" << endl;
+            return;
+        }
+
+        for (int i = 0; i < numBooks; ++i) {
+            inventory[i].displayBook();
+            cout << "---------------------------" << endl;
+        }
+    }
+
+    // Function to search for a book by title
+    void searchBook(const string& title) const {
+        for (int i = 0; i < numBooks; ++i) {
+            if (inventory[i].isTitle(title)) {
+                cout << "Book found!" << endl;
+                inventory[i].displayBook();
+                return;
+            }
+        }
+        cout << "Book not found!" << endl;
+    }
+
+    // Function to sell a book
+    void sellBook(const string& title, int quantity) {
+        for (int i = 0; i < numBooks; ++i) {
+            if (inventory[i].isTitle(title)) {
+                inventory[i].sellBook(quantity);
+                return;
+            }
+        }
+        cout << "Book not found!" << endl;
+    }
+};
+
+// Main function to interact with the Bookshop system
+int main() {
+    Bookshop shop;
+
+    // Adding books to the shop
+    shop.addBook(Book("The C++ Programming Language", "Bjarne Stroustrup", "Addison-Wesley", 59.99, 10));
+    shop.addBook(Book("Effective C++", "Scott Meyers", "O'Reilly", 39.99, 5));
+    shop.addBook(Book("Design Patterns", "Erich Gamma", "Addison-Wesley", 49.99, 8));
+
+    // Display all books
+    cout << "Inventory:" << endl;
+    shop.displayInventory();
+
+    // Search for a book
+    cout << "\nSearching for 'Effective C++':" << endl;
+    shop.searchBook("Effective C++");
+
+    // Sell a book
+    cout << "\nSelling 2 copies of 'Design Patterns':" << endl;
+    shop.sellBook("Design Patterns", 2);
+
+    // Display inventory after sale
+    cout << "\nInventory after sale:" << endl;
+    shop.displayInventory();
+
+    return 0;
+}
